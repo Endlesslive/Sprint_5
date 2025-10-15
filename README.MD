@@ -10,8 +10,4 @@ Stellar Burgers - это космический фастфуд-сервис дл
 
 - Python 3.8+
 - Google Chrome
-- Mozilla Firefox
 - pip
-
-## Установка зависимостей
-

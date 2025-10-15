@@ -11,75 +11,43 @@ class TestRegistration:
     def test_successful_registration(self, driver, base_url):
         """Тест успешной регистрации с корректными данными"""
         driver.get(base_url)
-        
-        # Клик по кнопке "Войти в аккаунт"
-        login_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(MainPageLocators.LOGIN_BUTTON)
-        )
+        login_button = WebDriverWait(driver, 10).until(                             # Клик по кнопке "Войти в аккаунт"
+            EC.element_to_be_clickable(MainPageLocators.LOGIN_BUTTON))
         login_button.click()
-        
-        # Переход на страницу регистрации
-        register_link = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(LoginPageLocators.REGISTER_LINK)
-        )
+        register_link = WebDriverWait(driver, 10).until(                            # Переход на страницу регистрации
+            EC.element_to_be_clickable(LoginPageLocators.REGISTER_LINK))
         register_link.click()
-        
-        # Заполнение формы регистрации
-        name_input = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(RegistrationPageLocators.NAME_INPUT)
-        )
+        name_input = WebDriverWait(driver, 10).until(                                # Заполнение формы регистрации
+            EC.presence_of_element_located(RegistrationPageLocators.NAME_INPUT))
         name_input.send_keys(generate_name())
-        
         email_input = driver.find_element(*RegistrationPageLocators.EMAIL_INPUT)
         email_input.send_keys(generate_email())
-        
         password_input = driver.find_element(*RegistrationPageLocators.PASSWORD_INPUT)
         password_input.send_keys(generate_password(8))
-        
-        # Клик по кнопке "Зарегистрироваться"
-        register_button = driver.find_element(*RegistrationPageLocators.REGISTER_BUTTON)
+        register_button = driver.find_element(*RegistrationPageLocators.REGISTER_BUTTON) # Клик по кнопке "Зарегистрироваться"
         register_button.click()
-        
-        # Проверка перехода на страницу входа
-        login_title = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE)
-        )
+        login_title = WebDriverWait(driver, 10).until(                               # Проверка перехода на страницу входа
+            EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE))
         assert login_title.is_displayed()
     
     def test_registration_with_incorrect_password(self, driver, base_url):
         """Тест регистрации с некорректным паролем (менее 6 символов)"""
         driver.get(base_url)
-        
-        # Клик по кнопке "Войти в аккаунт"
-        login_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(MainPageLocators.LOGIN_BUTTON)
-        )
+        login_button = WebDriverWait(driver, 10).until(                            # Клик по кнопке "Войти в аккаунт"
+            EC.element_to_be_clickable(MainPageLocators.LOGIN_BUTTON))
         login_button.click()
-        
-        # Переход на страницу регистрации
-        register_link = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(LoginPageLocators.REGISTER_LINK)
-        )
+        register_link = WebDriverWait(driver, 10).until(                          # Переход на страницу регистрации
+            EC.element_to_be_clickable(LoginPageLocators.REGISTER_LINK))
         register_link.click()
-        
-        # Заполнение формы с коротким паролем
-        name_input = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(RegistrationPageLocators.NAME_INPUT)
-        )
+        name_input = WebDriverWait(driver, 10).until(                                  # Заполнение формы с коротким паролем
+            EC.presence_of_element_located(RegistrationPageLocators.NAME_INPUT))
         name_input.send_keys(generate_name())
-        
         email_input = driver.find_element(*RegistrationPageLocators.EMAIL_INPUT)
         email_input.send_keys(generate_email())
-        
         password_input = driver.find_element(*RegistrationPageLocators.PASSWORD_INPUT)
         password_input.send_keys("12345")  # Пароль менее 6 символов
-        
-        # Клик по кнопке "Зарегистрироваться"
-        register_button = driver.find_element(*RegistrationPageLocators.REGISTER_BUTTON)
+        register_button = driver.find_element(*RegistrationPageLocators.REGISTER_BUTTON)  # Клик по кнопке "Зарегистрироваться"
         register_button.click()
-        
-        # Проверка отображения ошибки
-        error_message = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(RegistrationPageLocators.PASSWORD_ERROR)
-        )
+        error_message = WebDriverWait(driver, 10).until(                                  # Проверка отображения ошибки
+            EC.presence_of_element_located(RegistrationPageLocators.PASSWORD_ERROR))
         assert error_message.is_displayed()
