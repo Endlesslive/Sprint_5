@@ -38,7 +38,8 @@ class LoginPageLocators:
     REGISTER_LINK = (By.XPATH, "//a[text()='Зарегистрироваться']")
     # Ссылка "Восстановить пароль"
     RESTORE_PASSWORD_LINK = (By.XPATH, "//a[text()='Восстановить пароль']")
-
+    
+    LOGIN_BUTTON = (By.XPATH, "//button[text()='Войти']")
 
 class RegistrationPageLocators:
     """Локаторы страницы регистрации"""
@@ -71,6 +72,6 @@ class PersonalAccountPageLocators:
     # Заголовок профиля
     PROFILE_TITLE = (By.XPATH, "//a[text()='Профиль']")
     # Кнопка "Выход"
-    LOGOUT_BUTTON = (By.XPATH, "//button[text()='Выход']")
+    LOGOUT_BUTTON = (By.XPATH, "//button[contains(text(), 'Выход')]")
     # Ссылка "История заказов"
     ORDER_HISTORY_LINK = (By.XPATH, "//a[text()='История заказов']")

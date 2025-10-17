@@ -3,14 +3,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.page_locators import MainPageLocators
 from constants import DEFAULT_TIMEOUT
-
+from constants import BASE_URL
 
 class TestConstructor:
     """Тесты функциональности конструктора"""
     
-    def test_navigate_to_buns_section(self, driver, base_url):
+    def test_navigate_to_buns_section(self, driver):
         """Тест перехода к разделу 'Булки'"""
-        driver.get(base_url)
+        driver.get(BASE_URL)
         # Ожидание загрузки страницы
         WebDriverWait(driver, DEFAULT_TIMEOUT).until(
             EC.presence_of_element_located(MainPageLocators.CONSTRUCTOR_TITLE))
@@ -26,9 +26,9 @@ class TestConstructor:
             EC.presence_of_element_located(MainPageLocators.ACTIVE_TAB))
         assert "Булки" in active_tab.text
     
-    def test_navigate_to_sauces_section(self, driver, base_url):
+    def test_navigate_to_sauces_section(self, driver):
         """Тест перехода к разделу 'Соусы'"""
-        driver.get(base_url)
+        driver.get(BASE_URL)
         # Ожидание загрузки страницы
         WebDriverWait(driver, DEFAULT_TIMEOUT).until(
             EC.presence_of_element_located(MainPageLocators.CONSTRUCTOR_TITLE))
@@ -41,9 +41,9 @@ class TestConstructor:
             EC.presence_of_element_located(MainPageLocators.ACTIVE_TAB))
         assert "Соусы" in active_tab.text
     
-    def test_navigate_to_fillings_section(self, driver, base_url):
+    def test_navigate_to_fillings_section(self, driver):
         """Тест перехода к разделу 'Начинки'"""
-        driver.get(base_url)
+        driver.get(BASE_URL)
         # Ожидание загрузки страницы
         WebDriverWait(driver, DEFAULT_TIMEOUT).until(
             EC.presence_of_element_located(MainPageLocators.CONSTRUCTOR_TITLE))

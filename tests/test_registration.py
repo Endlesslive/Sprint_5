@@ -3,14 +3,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.page_locators import MainPageLocators, RegistrationPageLocators, LoginPageLocators
 from helpers.generators import generate_email, generate_password, generate_name
-
+from constants import BASE_URL
 
 class TestRegistration:
     """Тесты регистрации пользователя"""
     
-    def test_successful_registration(self, driver, base_url):
+    def test_successful_registration(self, driver):
         """Тест успешной регистрации с корректными данными"""
-        driver.get(base_url)
+        driver.get(BASE_URL)
         login_button = WebDriverWait(driver, 10).until(                             # Клик по кнопке "Войти в аккаунт"
             EC.element_to_be_clickable(MainPageLocators.LOGIN_BUTTON))
         login_button.click()
@@ -30,9 +30,9 @@ class TestRegistration:
             EC.presence_of_element_located(LoginPageLocators.LOGIN_TITLE))
         assert login_title.is_displayed()
     
-    def test_registration_with_incorrect_password(self, driver, base_url):
+    def test_registration_with_incorrect_password(self, driver):
         """Тест регистрации с некорректным паролем (менее 6 символов)"""
-        driver.get(base_url)
+        driver.get(BASE_URL)
         login_button = WebDriverWait(driver, 10).until(                            # Клик по кнопке "Войти в аккаунт"
             EC.element_to_be_clickable(MainPageLocators.LOGIN_BUTTON))
         login_button.click()
