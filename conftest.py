@@ -18,19 +18,14 @@ from locators.page_locators import (
     MainPageLocators
 )
 
-@pytest.fixture(params=[DEFAULT_BROWSER])
-def driver(request):
-    browser = request.param
-    if browser not in SUPPORTED_BROWSERS:
-        raise ValueError(f"Браузер {browser} не поддерживается")
-    if browser == 'chrome':
-        driver = webdriver.Chrome()
-    elif browser == 'firefox':
-        driver = webdriver.Firefox()
+@pytest.fixture
+def driver():
+    driver = webdriver.Chrome()
     driver.maximize_window()
     driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
     yield driver
     driver.quit()
+
 
 @pytest.fixture
 def test_credentials():
@@ -43,66 +38,39 @@ def test_credentials():
 @pytest.fixture
 def register_user(driver, test_credentials):
     driver.get(f"{BASE_URL}register")
-    try:
-        name_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-            EC.presence_of_element_located(RegistrationPageLocators.NAME_INPUT))
-        name_input.send_keys(test_credentials['name'])
-    except TimeoutException:
-        raise TimeoutException(f"Name input not found at {BASE_URL}register")
-    try:
-        email_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-            EC.presence_of_element_located(RegistrationPageLocators.EMAIL_INPUT))
-        email_input.send_keys(test_credentials['email'])
-    except TimeoutException:
-        raise TimeoutException(f"Email input not found at {BASE_URL}register")
-    try:
-        password_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-            EC.presence_of_element_located(RegistrationPageLocators.PASSWORD_INPUT))
-        password_input.send_keys(test_credentials['password'])
-    except TimeoutException:
-        raise TimeoutException(f"Password input not found at {BASE_URL}register")
-    try:
-        register_button = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-            EC.element_to_be_clickable(RegistrationPageLocators.REGISTER_BUTTON))
-        register_button.click()
-    except TimeoutException:
-        raise TimeoutException(f"Register button not found at {BASE_URL}register")
-    try:
-        WebDriverWait(driver, MEDIUM_WAIT).until(
-            EC.presence_of_element_located(LoginPageLocators.EMAIL_INPUT))
-    except TimeoutException:
-        raise TimeoutException("Login page not loaded after registration")
+    name_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+        EC.presence_of_element_located(RegistrationPageLocators.NAME_INPUT))
+    name_input.send_keys(test_credentials['name'])
+    email_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+        EC.presence_of_element_located(RegistrationPageLocators.EMAIL_INPUT))
+    email_input.send_keys(test_credentials['email'])
+    password_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+        EC.presence_of_element_located(RegistrationPageLocators.PASSWORD_INPUT))
+    password_input.send_keys(test_credentials['password'])
+    register_button = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+        EC.element_to_be_clickable(RegistrationPageLocators.REGISTER_BUTTON))
+    register_button.click()
+    WebDriverWait(driver, MEDIUM_WAIT).until(
+        EC.presence_of_element_located(LoginPageLocators.EMAIL_INPUT))
     return test_credentials
 
 @pytest.fixture
 def login_user(driver):
     def _login(email, password):
         driver.get(f"{BASE_URL}login")
-        try:
-            email_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-                EC.presence_of_element_located(LoginPageLocators.EMAIL_INPUT))
-            email_input.clear()
-            email_input.send_keys(email)
-        except TimeoutException:
-            raise TimeoutException(f"Email input not found at {BASE_URL}login")
-        try:
-            password_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-                EC.presence_of_element_located(LoginPageLocators.PASSWORD_INPUT))
-            password_input.clear()
-            password_input.send_keys(password)
-        except TimeoutException:
-            raise TimeoutException(f"Password input not found at {BASE_URL}login")
-        try:
-            login_submit_button = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
-                EC.element_to_be_clickable(LoginPageLocators.LOGIN_SUBMIT_BUTTON))
-            login_submit_button.click()
-        except TimeoutException:
-            raise TimeoutException(f"Login button not found at {BASE_URL}login")
-        try:
-            WebDriverWait(driver, MEDIUM_WAIT).until(
-                EC.element_to_be_clickable(MainPageLocators.PERSONAL_ACCOUNT_BUTTON))
-        except TimeoutException:
-            raise TimeoutException("Personal account button not found after login")
+        email_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+            EC.presence_of_element_located(LoginPageLocators.EMAIL_INPUT))
+        email_input.clear()
+        email_input.send_keys(email)
+        password_input = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+            EC.presence_of_element_located(LoginPageLocators.PASSWORD_INPUT))
+        password_input.clear()
+        password_input.send_keys(password)
+        login_submit_button = WebDriverWait(driver, DEFAULT_TIMEOUT).until(
+            EC.element_to_be_clickable(LoginPageLocators.LOGIN_SUBMIT_BUTTON))
+        login_submit_button.click()
+        WebDriverWait(driver, MEDIUM_WAIT).until(
+            EC.element_to_be_clickable(MainPageLocators.PERSONAL_ACCOUNT_BUTTON))
     return _login
 
 @pytest.fixture
